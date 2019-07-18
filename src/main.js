@@ -2,7 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import VueResource from 'vue-resource'      /* 引入VueResource实现数据的get和post */
-import VueRouter from 'vue-router'
+import VueRouter from 'vue-router'          /* 引入vueRouter实现路由 */
 
 import App from './App'                     /* 引入App组件 */
 
@@ -11,7 +11,16 @@ import blogRouter from './blogRouter'     /* 引入已经配置好的路由数�
 Vue.config.productionTip = false
 
 Vue.use(VueResource)      /* 使用VueResource 的声明*/
-Vue.use(VueRouter) 
+Vue.use(VueRouter)        /* 使用VueRouter 的声明 */
+
+//自定义指令——用于聚焦输入框
+Vue.directive("focus",{
+  //当绑定的元素插入到DOM中
+  inserted:function(el){
+    //聚焦元素
+    el.focus();
+  }
+})
 
 //自定义指令 ——用于控制标题颜色的指令rainbow 
 Vue.directive("rainbow",{
@@ -52,6 +61,7 @@ const router = new VueRouter({
   routes:blogRouter,        /* blogRouter是引用blogRouter.js中的数组 */
   mode:"history"            /* 消除# */
 })
+
 
 new Vue({
   el: '#app',

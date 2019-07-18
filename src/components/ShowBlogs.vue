@@ -1,14 +1,15 @@
 <template>
   <div  v-theme:column="'wide'" id="show-blogs">        <!-- v-theme是自定义指令，用来改变容器大小，其中column、'wide'都是指令参数 -->
       <h1>Blog</h1>           
-      <input type="text"  v-model="searchTitle" placeholder="Search Blog By Title">             <!-- 标题搜索框 -->
-      <input type="text"  v-model="searchContent" placeholder="Search Blog By Content">             <!-- 内容搜索框 -->
+      <input type="text" v-focus v-show="searchByTitle"  v-model="searchTitle" placeholder="Search Blog By Title">              <!-- 标题搜索框 -->
+      <input type="text" v-focus  v-show="!searchByTitle" v-model="searchContent" placeholder="Search Blog By Content">             <!-- 内容搜索框 -->
+      <button id="changeSearch" v-on:click="changeSearchMethod">改变搜索方式</button>
 
       <div v-for="blog in filterBlogs" :key="blog.id" class="single-blog">            <!-- v-for遍历展示博客 -->
           <router-link v-bind:to="'/Blog/'+blog.id">           
            <!-- router-link 实现点击博客然后跳转单独显示 因为要拼接字符串 所以/blog/要用''括起来，然后用v-bind绑定 -->
            <!-- v-raibow是自定义指令，用于将标题添加一个颜色 -->
-            <h2 v-rainbow>{{ blog.idNumber }}.{{ blog.title | to-uppercase}}</h2>            <!-- to-uppercase 是一个全局过滤器 用于将博客的标题显示为大写 -->
+            <h2 v-rainbow>{{ blog.idNumber }}.{{ blog.title }}</h2>            <!-- to-uppercase 是一个全局过滤器 用于将博客的标题显示为大写 （已删除）-->
             <article>{{blog.content | concentre}}</article>
           </router-link>                          <!-- concentre 是一个全局过滤器，用于集中缩写博客的内容 -->
       </div>
@@ -22,8 +23,9 @@ export default {
   data:function(){
       return{
         blogs:[],               /* 用于存储获取到的数据 */
+        searchByTitle:"true",
         searchTitle:"",
-        searchContent:"",
+        searchContent:"",   
       }
   },
   created(){
@@ -60,6 +62,11 @@ export default {
           }
           else {return this.blogs;}
       }
+  },
+  methods:{
+      changeSearchMethod:function(){
+          this.searchByTitle = !this.searchByTitle;
+      }
   }
 }
 </script>
@@ -73,16 +80,25 @@ export default {
 }
 .single-blog{
     padding: 20px;
-    margin: 20px 0;
+    margin: 30px 0;
     background-color: #eee;
 }
 input{
     height: 26px;
     width: 300px;
-    margin-right: 25px;
+    margin-right: 5px;
 }
 #show-blogs a{
     color:#666;
     text-decoration: none;
+}
+#changeSearch{
+    display: block;
+    font-size: 14px;
+    color:#34ade6;
+    border:2px solid #c02371;
+    border-radius: 10px;
+    margin-top: 10px;
+    padding: 5px;
 }
 </style>

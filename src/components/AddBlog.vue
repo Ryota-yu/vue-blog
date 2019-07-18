@@ -5,7 +5,7 @@
     <!-- 添加博客 -->
     <form v-if="!submmited">
         <label>博客标题</label>
-        <input type="text" v-model="blog.title" required />     <!-- 因为表单的提交使用的是自己提供的addBlog方法，所以required属性没有用处 -->
+        <input type="text" v-model="blog.title" required  v-focus />     <!-- 因为表单的提交使用的是自己提供的addBlog方法，所以required属性没有用处 -->
 
         <label>博客内容</label>
         <textarea v-model="blog.content"></textarea>
@@ -21,12 +21,18 @@
             <input type="checkbox" value="vue.js" v-model="blog.categories"> 
         </div>
 
-        <label>作者</label>
+       <!--  <label>作者</label>
         <select v-model="blog.authorHaved" >             
-            <option v-for="author in authors" :key="author.id">{{ author }}</option>         <!-- 根据事先给定的authors数组显示出可以选择的选项 -->
-        </select>
+            <option v-for="author in authors" :key="author.id">{{ author }}</option>       
         <label>(其他作者)</label>
-        <input type="text" v-model="blog.authorAdd">
+        <input type="text" v-model="blog.authorAdd"> -->
+        
+        <label>作者</label>
+        <input type="text" v-model="blog.authorHaved" list="authors_list" name="link" autocomplete="off"/>
+        <datalist id="authors_list">
+            <option v-for="author in authors" :key="author.id" >{{ author }}</option> 
+        </datalist>
+
 
         
         <button v-on:click.prevent="addBlog">添加博客</button>
